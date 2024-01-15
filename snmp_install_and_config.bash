@@ -29,7 +29,7 @@ else
 fi
 
 # Vérification de la présence du protocole SNMP sur le système en fonction du VLAN
-echo "Vérification de la présence du protocole SNMP sur le système."
+echo "Vérification de la présence du protocole SNMP sur le système." | tee -a "$LOG_FILE"
 
 oceanet_oxalis_vlan=$(ip a | grep -i "10.249.0.255" | awk '{print $4}')
 oceanet_gnau_vlan=$(ip a | grep -i "10.249.2.255" | awk '{print $4}')
