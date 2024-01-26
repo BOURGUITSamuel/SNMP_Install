@@ -31,41 +31,6 @@ fi
 # Vérification de la présence du protocole SNMP sur le système en fonction du VLAN
 echo "Vérification de la présence du protocole SNMP sur le système." | tee -a "$LOG_FILE"
 
-oceanet_oxalis_vlan=$(ip a | grep -i "10.249.0.255" | awk '{print $4}')
-oceanet_gnau_vlan=$(ip a | grep -i "10.249.2.255" | awk '{print $4}')
-synaaps_oxalis_vlan=$(ip a | grep -i "10.0.6.255" | awk '{print $4}')
-synaaps_gnau_vlan=$(ip a | grep -i "10.0.150.255" | awk '{print $4}')
-
-if [ -n "$oceanet_oxalis_vlan" ] || [ -n "$oceanet_gnau_vlan" ]; then
-  echo "VLAN Oceanet." | tee -a "$LOG_FILE"
-  if (dpkg --get-selections | grep -w "install" | grep -i "snmpd" > /dev/null) && (snmpwalk -v2c -c public 10.249.0.1 > /dev/null); then
-    echo "VLAN Oxalis" | tee -a "$LOG_FILE"
-    echo "Le protocole SNMP est déjà installé sur le système." | tee -a "$LOG_FILE"
-    exit 0
-  elif (dpkg --get-selections | grep -w "install" | grep -i "snmpd" > /dev/null) && (snmpwalk -v2c -c public 10.249.2.1 > /dev/null); then
-    echo "VLAN GNAU" | tee -a "$LOG_FILE"
-    echo "Le protocole SNMP est déjà installé sur le système." | tee -a "$LOG_FILE"
-    exit 0
-  else
-    echo "Le protocole SNMP n'est pas installé sur le système, installation en cours..." | tee -a "$LOG_FILE"
-  fi
-elif [ -n "$synaaps_oxalis_vlan" ] || [ -n "$synaaps_gnau_vlan" ]; then
-  echo "VLAN Synaaps." | tee -a "$LOG_FILE"
-  if (dpkg --get-selections | grep -w "install" | grep -i "snmpd" > /dev/null) && (snmpwalk -v2c -c public 10.0.6.100 > /dev/null); then
-    echo "VLAN Oxalis" | tee -a "$LOG_FILE"
-    echo "Le protocole SNMP est déjà installé sur le système." | tee -a "$LOG_FILE"
-    exit 0
-  elif (dpkg --get-selections | grep -w "install" | grep -i "snmpd" > /dev/null) && (snmpwalk -v2c -c public 10.0.150.1 > /dev/null); then
-    echo "VLAN GNAU" | tee -a "$LOG_FILE"
-    echo "Le protocole SNMP est déjà installé sur le système." | tee -a "$LOG_FILE"
-    exit 0
-  else
-    echo "Le protocole SNMP n'est pas installé sur le système, installation en cours..." | tee -a "$LOG_FILE"
-  fi
-else
-  log_error "Le serveur cible n'est pas situé dans le VLAN de nagios." | tee -a "$LOG_FILE"
-fi
-
 # Vérification de la disponibilité du paquet d'installation du protocole SNMP
 echo "Vérification de la disponibilité du paquet d'installation du protocole SNMP." | tee -a "$LOG_FILE"
 if apt-cache policy snmpd > /dev/null; then
