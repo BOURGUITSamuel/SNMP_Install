@@ -28,9 +28,6 @@ else
   echo "L'utilisateur connecté est bien root." | tee -a "$LOG_FILE"
 fi
 
-# Vérification de la présence du protocole SNMP sur le système en fonction du VLAN
-echo "Vérification de la présence du protocole SNMP sur le système." | tee -a "$LOG_FILE"
-
 # Vérification de la disponibilité du paquet d'installation du protocole SNMP
 echo "Vérification de la disponibilité du paquet d'installation du protocole SNMP." | tee -a "$LOG_FILE"
 if apt-cache policy snmpd > /dev/null; then
